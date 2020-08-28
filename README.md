@@ -1,5 +1,34 @@
 # Cordova AdMob Plugin
 
+With iOS 14+ AppTrackingTransparency permission. Based on https://github.com/ratson/cordova-plugin-admob-free and https://github.com/tomitank/cordova-plugin-admob-tomitank
+
+Drawbacks & Bugs:
+-------------------------------------------------------
+- You need to call first "admob.banner.prepare()" otherwise it doesn't work (same as the original plugin)
+  this call the AppTrackingTransparency permission.
+
+- For unknown reasons, if the user does not respond for too long, the application will freeze. if you know the solution please let me (tomitank) know.
+
+Extra:
+-------------------------------------------------------
+This plugin return the AppTrackingTransparency status integer as string. So you can write extra notification for user.
+
+Here is the possible values: https://developer.apple.com/documentation/apptrackingtransparency/attrackingmanager/authorizationstatus
+authorized: 3
+denied: 2
+
+Usage:
+-------------------------------------------------------
+```
+admob.banner.prepare().then(function(result) {
+    alert(status);
+});
+```
+
+-------------------------------------------------------
+
+## Original README (from ratson)
+
 A free, no ad-sharing version of Google AdMob plugin for Cordova.
 
 ## Status

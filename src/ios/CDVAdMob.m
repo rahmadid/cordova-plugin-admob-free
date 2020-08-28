@@ -132,29 +132,59 @@
 - (void)createBannerView:(CDVInvokedUrlCommand *)command {
     NSLog(@"createBannerView");
 
-    CDVPluginResult *pluginResult;
-    NSString *callbackId = command.callbackId;
-    NSArray* args = command.arguments;
+    if (@available(iOS 14.0, *)) {
+        [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+            CDVPluginResult *pluginResult;
+            NSString *callbackId = command.callbackId;
+            NSArray* args = command.arguments;
 
-    NSUInteger argc = [args count];
-    if( argc >= 1 ) {
-        NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
-        [self __setOptions:options];
-        autoShowBanner = autoShow;
+            NSUInteger argc = [args count];
+            if( argc >= 1 ) {
+                NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
+                [self __setOptions:options];
+                autoShowBanner = autoShow;
+            }
+
+            if(! self.bannerView) {
+                [self __createBanner];
+            }
+
+            if(autoShowBanner) {
+                bannerShow = autoShowBanner;
+
+                [self __showAd:YES];
+            }
+
+            NSString* statusString = [NSString stringWithFormat:@"%i", status];
+
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:statusString];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+      }];
+    } else {
+        CDVPluginResult *pluginResult;
+        NSString *callbackId = command.callbackId;
+        NSArray* args = command.arguments;
+
+        NSUInteger argc = [args count];
+        if( argc >= 1 ) {
+            NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
+            [self __setOptions:options];
+            autoShowBanner = autoShow;
+        }
+
+        if(! self.bannerView) {
+            [self __createBanner];
+        }
+
+        if(autoShowBanner) {
+            bannerShow = autoShowBanner;
+
+            [self __showAd:YES];
+        }
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"3"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     }
-
-    if(! self.bannerView) {
-        [self __createBanner];
-    }
-
-    if(autoShowBanner) {
-        bannerShow = autoShowBanner;
-
-        [self __showAd:YES];
-    }
-
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command {

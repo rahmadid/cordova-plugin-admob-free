@@ -1,6 +1,9 @@
 # Releases
 
-## Next
+## 1.0.0 (2020-08-28)
+
+* Add iOS 14+ AppTrackingTransparency permission (from tomitank fork).
+* Update `cordova-admob-sdk` to v1.0.0.
 
 ## 0.26.0 (2019-03-30)
 

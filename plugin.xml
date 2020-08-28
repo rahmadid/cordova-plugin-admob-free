@@ -72,5 +72,31 @@
         </config-file>
         <header-file src="src/ios/CDVAdMob.h" />
         <source-file src="src/ios/CDVAdMob.m" />
+
+        <config-file parent="NSAppTransportSecurity" target="*-Info.plist">
+            <dict>
+                <key>NSAllowsArbitraryLoadsForMedia</key>
+                <true/>
+                <key>NSAllowsArbitraryLoadsInWebContent</key>
+                <true/>
+            </dict>
+        </config-file>
+
+        <config-file parent="GADIsAdManagerApp" target="*-Info.plist">
+            <true />
+        </config-file>
+
+        <config-file parent="SKAdNetworkItems" target="*-Info.plist">
+            <array>
+                <dict>
+                <key>SKAdNetworkIdentifier</key>
+                <string>cstr6suwn9.skadnetwork</string>
+                </dict>
+            </array>
+        </config-file>
+
+        <config-file parent="NSUserTrackingUsageDescription" target="*-Info.plist">
+            <string>This will be used to deliver personalized ads to you.</string>
+        </config-file>
     </platform>
 </plugin>
